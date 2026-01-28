@@ -51,7 +51,7 @@ async function handleSearch() {
     }
 }
 
-// Función para crear la gráfica (CORREGIDA)
+// Función para crear la gráfica 
 function renderChart(labels, data, locationName) {
     const ctx = canvas.getContext('2d');
 
