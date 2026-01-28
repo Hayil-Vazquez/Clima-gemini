@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Trends Clishboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <main class="container">
+        <header class="main-header">
+            <h3>HEADER:</h3>
+            <h1>Panel de Trends Clishboard</h1>
+        </header>
+
+        <section class="search-section">
+            <input type="text" id="cityInput" placeholder="Ciudad (ej. Madrid, Mexico City)" autocomplete="off">
+            <button id="searchBtn">Search</button>
+        </section>
+
+        <div id="loadingContainer" class="status-container hidden">
+            <div class="spinner"></div>
+            <div class="loading-text">
+                <strong>Loading</strong><br>
+                Loading data...<br>Please wait.
+            </div>
+        </div>
+
+        <div id="errorContainer" class="status-container hidden">
+            <p id="errorMessage" class="error-text"></p>
+        </div>
+
+        <section id="chartContainer" class="chart-wrapper hidden">
+            <canvas id="weatherChart"></canvas>
+        </section>
+
+        <footer class="legend-footer">
+            <h4>COLOR KEY</h4>
+            <div class="legend-box">
+                <div class="legend-item">
+                    <span class="dot red"></span>
+                    <span>TEMP > 30°C</span>
+                </div>
+                <div class="legend-item">
+                    <span class="dot blue"></span>
+                    <span>TEMP < 10°C</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
