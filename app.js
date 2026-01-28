@@ -71,6 +71,14 @@ function renderChart(labels, data, locationName) {
         myChart.destroy();
     }
 
+
+   function renderChart(labels, data, locationName) {
+    const ctx = canvas.getContext('2d');
+
+    if (myChart) {
+        myChart.destroy();
+    }
+
     myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -80,25 +88,30 @@ function renderChart(labels, data, locationName) {
                 data: data,
                 borderWidth: 2,
                 fill: false,
-                tension: 0.4, // Suavizar la curva
-                pointRadius: 3,
-                // Lógica de Segmentos para colores condicionales
+                tension: 0.4,
+                
+                // --- Estilo de Puntos Mejorado ---
+                pointBackgroundColor: '#ffffff', 
+                pointBorderColor: (ctx) => {
+                    const val = ctx.raw; 
+                    if (val >= 30) return '#ff4d4d'; // Rojo
+                    if (val <= 10) return '#2e86de'; // Azul
+                    return '#4b5563'; // Gris
+                },
+                pointRadius: 4,
+                pointBorderWidth: 2,
+                
+                // --- Estilo de Línea Dinámico ---
                 segment: {
                     borderColor: ctx => {
-                        // ctx.p0 y ctx.p1 son el punto de inicio y fin del segmento
-                        const valStart = ctx.p0.parsed.y;
-                        const valEnd = ctx.p1.parsed.y;
-                        
-                        // Si cualquiera de los puntos del segmento supera 30 -> Rojo
-                        if (valStart > 30 || valEnd > 30) return '#ff4d4d';
-                        // Si cualquiera de los puntos es menor a 10 -> Azul
-                        if (valStart < 10 || valEnd < 10) return '#2e86de';
-                        // Color por defecto (Gris oscuro)
-                        return '#4b5563'; 
+                        const val = ctx.p0.parsed.y;
+                        if (val >= 30) return '#ff4d4d';
+                        if (val <= 10) return '#2e86de';
+                        return '#4b5563';
                     }
                 }
             }]
-        },
+        }, // <--- Aquí cerramos 'data'
         options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -107,31 +120,17 @@ function renderChart(labels, data, locationName) {
                 mode: 'index',
             },
             plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                tooltip: {
-                    enabled: true // Muestra valores al pasar el cursor
-                }
+                legend: { display: true, position: 'top' },
+                tooltip: { enabled: true }
             },
             scales: {
                 y: {
                     beginAtZero: false,
-                    title: {
-                        display: true,
-                        text: 'Temperatura (°C)'
-                    }
+                    title: { display: true, text: 'Temperatura (°C)' }
                 },
                 x: {
-                    title: {
-                        display: true,
-                        text: 'Línea de Tiempo (Días / Horas)'
-                    },
-                    ticks: {
-                        // Limitar etiquetas para que no se sature el eje X
-                        maxTicksLimit: 10 
-                    }
+                    title: { display: true, text: 'Línea de Tiempo (Días / Horas)' },
+                    ticks: { maxTicksLimit: 10 }
                 }
             }
         }
